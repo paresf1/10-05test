@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMenu">
+
+	<select id="getAllBoardmenu" resultType="BoardMenuVo">
+		SELECT *
+		FROM BOARDMENU
+		WHERE BOARD_DELETE = 'N'
+	</select>
+
+	<select id="getAllBoardmenuUpdate" resultType="BoardMenuVo">
+		SELECT *
+		FROM BOARDMENU
+	</select>
+
+	<insert id="setBoardmenu" parameterType="BoardMenuVo">
+		insert into BOARDMENU (BOARDMENU_SEQ, BOARD_NAME, BOARD_DELETE)
+		VALUES
+		(BOARDMENU_SEQ.NEXTVAL, #{board_name}, #{board_delete})
+	</insert>
+
+	<update id="updateBoardmenu" parameterType="BoardMenuVo">
+		update Boardmenu set board_name=#{board_name}, board_delete =#{board_delete}
+		where boardmenu_seq = #{boardmenu_seq}
+	</update>
+
+	<select id="getAllBoardList" parameterType="int" resultType="BoardVo">
+	select	 BOARDMENU_SEQ,
+      		 LEVEL BOARDLEVEL,
+     		 BOARD_SEQ,
+      		 BOARD_PARENT_SEQ,
+       	     CASE WHEN LEVEL = 1 THEN '' ELSE LPAD(' ㄴ', LEVEL*4, ' ') END ||
+      		 CASE WHEN BOARD_DELETE = 'Y' THEN '**삭제된 글입니다.**'  ELSE BOARD_TITLE END BOARD_TITLE,
+    	     USER_ID,
+      		 BOARD_DELETE,
+     		 CREATE_DATE
+	FROM(select * from board where boardmenu_seq = #{boardmenu_seq}
+		 and board_delete ='N')
+	START WITH  BOARD_PARENT_SEQ is null
+	CONNECT BY PRIOR BOARD_SEQ = BOARD_PARENT_SEQ 
+	ORDER SIBLINGS BY BOARD_SEQ
+	
+	</select>
+
+</mapper>
+

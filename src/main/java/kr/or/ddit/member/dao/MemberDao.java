@@ -1,10 +1,10 @@
 package kr.or.ddit.member.dao;
 
-import org.apache.catalina.manager.DummyProxySession;
 import org.apache.ibatis.session.SqlSession;
 
 import kr.or.ddit.Mybatis.MybatisUtil;
-import kr.or.ddit.member.model.MemberVo;
+import kr.or.ddit.model.BoardMenuVo;
+import kr.or.ddit.model.MemberVo;
 
 public class MemberDao implements MemberDaoI{
 
@@ -17,5 +17,7 @@ public class MemberDao implements MemberDaoI{
 		
 		return memberVo;
 	}
+
+	
 
 }

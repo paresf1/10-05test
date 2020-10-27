@@ -1,6 +1,6 @@
 package kr.or.ddit.member.service;
 
-import kr.or.ddit.member.model.MemberVo;
+import kr.or.ddit.model.MemberVo;
 
 public interface MemberServiceI {
 

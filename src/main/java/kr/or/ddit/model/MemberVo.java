@@ -1,4 +1,4 @@
-package kr.or.ddit.member.model;
+package kr.or.ddit.model;
 
 import java.util.Date;
 
