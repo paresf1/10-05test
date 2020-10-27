@@ -3,47 +3,47 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="boardMenu">
+<mapper namespace="board">
 
-	<select id="getAllBoardmenu" resultType="BoardMenuVo">
-		SELECT *
-		FROM BOARDMENU
-		WHERE BOARD_DELETE = 'N'
-	</select>
-
-	<select id="getAllBoardmenuUpdate" resultType="BoardMenuVo">
-		SELECT *
-		FROM BOARDMENU
-	</select>
-
-	<insert id="setBoardmenu" parameterType="BoardMenuVo">
-		insert into BOARDMENU (BOARDMENU_SEQ, BOARD_NAME, BOARD_DELETE)
-		VALUES
-		(BOARDMENU_SEQ.NEXTVAL, #{board_name}, #{board_delete})
-	</insert>
-
-	<update id="updateBoardmenu" parameterType="BoardMenuVo">
-		update Boardmenu set board_name=#{board_name}, board_delete =#{board_delete}
-		where boardmenu_seq = #{boardmenu_seq}
-	</update>
-
-	<select id="getAllBoardList" parameterType="int" resultType="BoardVo">
-	select	 BOARDMENU_SEQ,
+	
+	<select id="getAllBoardList" parameterType="BoardVo" resultType="BoardVo">
+	 SELECT *
+	 FROM
+		    (SELECT ROWNUM rn, A.*
+		     FROM
+		        (select	BOARDMENU_SEQ,
       		 LEVEL BOARDLEVEL,
      		 BOARD_SEQ,
       		 BOARD_PARENT_SEQ,
-       	     CASE WHEN LEVEL = 1 THEN '' ELSE LPAD(' ㄴ', LEVEL*4, ' ') END ||
+       	     CASE WHEN LEVEL = 1 THEN '' ELSE LPAD(' ㄴ', LEVEL*4, '!') END ||
       		 CASE WHEN BOARD_DELETE = 'Y' THEN '**삭제된 글입니다.**'  ELSE BOARD_TITLE END BOARD_TITLE,
     	     USER_ID,
       		 BOARD_DELETE,
      		 CREATE_DATE
-	FROM(select * from board where boardmenu_seq = #{boardmenu_seq}
-		 and board_delete ='N')
+	FROM(select * from board where boardmenu_seq = #{boardmenu_seq})
 	START WITH  BOARD_PARENT_SEQ is null
 	CONNECT BY PRIOR BOARD_SEQ = BOARD_PARENT_SEQ 
-	ORDER SIBLINGS BY BOARD_SEQ
+	ORDER SIBLINGS BY BOARD_SEQ) A )
+	WHERE rn BETWEEN (#{page} - 1) * #{pageSize} + 1  AND #{page}  * #{pageSize}
 	
 	</select>
+	
+  <select id="getBoardTotalCnt" resultType="int" >
+		SELECT COUNT(*)
+		FROM board	where boardmenu_seq = #{boardmenu_seq}
+  </select>
+
+  <insert id="setBoard" parameterType="BoardVo">
+  	insert into board(BOARD_TITLE, BOARD_CONTENT, BOARD_SEQ, BOARD_DELETE, CREATE_DATE, BOARDMENU_SEQ,  USER_ID)
+	values ( #{board_title}, #{board_content}, board_seq.nextval, 'N', sysdate, #{boardmenu_seq}, #{user_id})
+  	
+  </insert>
+
+  <select id="getBoardContent" parameterType="int" resultType="BoardVo">
+   select * 
+   from board
+   where board_seq = #{board_seq}
+  </select>
 
 </mapper>
 

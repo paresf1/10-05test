@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <% request.getAttribute("menuList"); %>
 
-<body>
+	<div>
 	<ul class="nav nav-sidebar">
 			<li class="active"><a href="${pageContext.request.contextPath }/main.jsp">Main <span class="sr-only">(current)</span></a></li>
 			<li class="active"><a href="${pageContext.request.contextPath }/BoardMenuInsert">게시글생성</a></li>
@@ -13,4 +13,4 @@
 			</c:forEach>
 			
 	</ul>
-</body>
+	</div>

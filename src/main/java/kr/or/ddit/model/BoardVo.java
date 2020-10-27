@@ -1,15 +1,20 @@
 package kr.or.ddit.model;
 
+import java.util.Date;
+
 public class BoardVo {
 
 	private String board_title       ;
 	private String board_content     ;
 	private int board_seq         ;
 	private String board_delete      ;
-	private String create_date       ;
+	private Date create_date       ;
 	private int boardmenu_seq     ;
 	private int board_parent_seq  ;
 	private String user_id           ;
+	private int page ;
+	private int pageSize ;
+	
 	public String getBoard_title() {
 		return board_title;
 	}
@@ -34,10 +39,10 @@ public class BoardVo {
 	public void setBoard_delete(String board_delete) {
 		this.board_delete = board_delete;
 	}
-	public String getCreate_date() {
+	public Date getCreate_date() {
 		return create_date;
 	}
-	public void setCreate_date(String create_date) {
+	public void setCreate_date(Date create_date) {
 		this.create_date = create_date;
 	}
 	public int getBoardmenu_seq() {
@@ -58,6 +63,18 @@ public class BoardVo {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -69,6 +86,8 @@ public class BoardVo {
 		result = prime * result + ((board_title == null) ? 0 : board_title.hashCode());
 		result = prime * result + boardmenu_seq;
 		result = prime * result + ((create_date == null) ? 0 : create_date.hashCode());
+		result = prime * result + page;
+		result = prime * result + pageSize;
 		result = prime * result + ((user_id == null) ? 0 : user_id.hashCode());
 		return result;
 	}
@@ -107,6 +126,10 @@ public class BoardVo {
 				return false;
 		} else if (!create_date.equals(other.create_date))
 			return false;
+		if (page != other.page)
+			return false;
+		if (pageSize != other.pageSize)
+			return false;
 		if (user_id == null) {
 			if (other.user_id != null)
 				return false;
@@ -114,13 +137,15 @@ public class BoardVo {
 			return false;
 		return true;
 	}
+	
 	@Override
 	public String toString() {
 		return "BoardVo [board_title=" + board_title + ", board_content=" + board_content + ", board_seq=" + board_seq
 				+ ", board_delete=" + board_delete + ", create_date=" + create_date + ", boardmenu_seq=" + boardmenu_seq
-				+ ", board_parent_seq=" + board_parent_seq + ", user_id=" + user_id + "]";
+				+ ", board_parent_seq=" + board_parent_seq + ", user_id=" + user_id + ", page=" + page + ", pageSize="
+				+ pageSize + "]";
 	}
-	
+
 	
 	
 }
