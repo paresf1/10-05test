@@ -1,19 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<%@ include file="/layout/commonLib.jsp" %>
-<!-- include libraries(jQuery, bootstrap) -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="../../favicon.ico">
+
+<title>Jsp</title>
+<%@ include file = "/layout/commonLib.jsp" %>
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!-- include summernote css/js -->
 <style>
 	#aa{
-		width : 90%;
+		width : 80%;
 		height : 80%;
 		float: left;
 		padding-left: 19%;
@@ -58,14 +65,13 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<%@ include file = "/layout/header.jsp" %>
-
-<div class="container-fluid">
-<div class="row">
-		<div class="col-sm-3col-md-2 sidebar">
-		<%@ include file = "/layout/left.jsp" %>
-		</div>
-</div>
+	<%@ include file = "/layout/header.jsp" %>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<%@ include file = "/layout/left.jsp" %>
+			</div>
+			
 				<div id="aa">
 			<form id="frm" class="form-horizontal" role="form"
 						action="${cp }BoardCreate" method="Post"
@@ -84,7 +90,7 @@ $(document).ready(function() {
 				
 			</form>
 				</div>
-			
+			</div>
 		</div>
 </body>
 </html>

@@ -53,12 +53,7 @@ public class BoardService implements BoardServiceI {
 		int totalCnt = boardDao.selectMemberTotalCnt(sqlSession, bv.getBoardmenu_seq());
 		int pageSize = bv.getPageSize();
 		int pages = (int)Math.ceil( (double)totalCnt/pageSize);
-		int prePage = pages-1;
-		int endPage = pages+1;
 		map.put("pages", pages);
-		
-		map.put("prePage", prePage);
-		map.put("endPage", endPage);
 		
 		sqlSession.close();
 		return map;

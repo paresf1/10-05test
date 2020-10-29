@@ -15,21 +15,8 @@ public class BoardVo {
 	private int page ;
 	private int pageSize ;
 	private int boardlevel;
-	private int prePage;
-	private int endPage;
 	
-	public int getPrePage() {
-		return prePage;
-	}
-	public void setPrePage(int prePage) {
-		this.prePage = prePage;
-	}
-	public int getEndPage() {
-		return endPage;
-	}
-	public void setEndPage(int endPage) {
-		this.endPage = endPage;
-	}
+
 	public int getBoardlevel() {
 		return boardlevel;
 	}

@@ -81,12 +81,12 @@ $(document).ready(function(){
 						<label for="boardTitle" class="col-sm-2 control-label">제목</label>
 						<div class="col-sm-10">
 						<input type="text" class="form-control" id="board_title" name="board_title"
-							 placeholder="사용자 아이디" value = "${BoardVo.board_title }" >
+							 placeholder="제목을 입력해주세요" value = "${BoardVo.board_title }" >
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="board_content" class="col-sm-2 control-label">사용자 이름</label>
+						<label for="board_content" class="col-sm-2 control-label">내용</label>
 						<div class="col-sm-10">
 							<textarea id="summernote" name="board_content" >${BoardVo.board_content }</textarea>
 						</div>

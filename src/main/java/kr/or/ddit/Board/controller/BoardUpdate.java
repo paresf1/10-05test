@@ -83,6 +83,7 @@ public class BoardUpdate extends HttpServlet {
 		for (int i = 1; i <=count ; i++) {
 			Part profile = request.getPart("FILE_NAME"+i);
 			String realfileName = FileUploadUtil.getFilename(profile.getHeader("content-Disposition"));
+			if (!(realfileName == null || realfileName.equals(""))) {
 			String fileExtension = FileUploadUtil.getExtension(realfileName);
 			String file_name = "D:\\profile\\"+UUID.randomUUID().toString() + "."+fileExtension;
 			String filePath = "";
@@ -96,6 +97,7 @@ public class BoardUpdate extends HttpServlet {
 			fv.setFile_realname(realfileName);
 			
 			boardService.setFile(fv);
+			}
 		}
 		response.sendRedirect(request.getContextPath() + "/BoardContent?board_seq="+board_seq);
 		

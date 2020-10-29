@@ -63,7 +63,9 @@ public class BoardMenuInsert extends HttpServlet {
 		logger.debug("{}",count);
 		
 		List<BoardMenuVo> menuList = boardService.getAllmenu();
+		List<BoardMenuVo> menuListUpdate = boardService.getAllBoardmenuUpdate();
 		request.getSession().setAttribute("menuList", menuList);
+		request.setAttribute("menuListUpdate", menuListUpdate);
 		
 		request.getRequestDispatcher("boardMenu/boardmenusetting.jsp").forward(request, response);
 	}

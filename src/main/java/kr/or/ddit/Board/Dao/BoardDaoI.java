@@ -46,6 +46,9 @@ public interface BoardDaoI {
 	// 답글을 작성하기 위한 메서드
 	int setBoardChild(BoardVo bv);
 	
+	//게시글을 작성하기 위한 메서드
+	int setBoardresult(BoardVo bv);
+	
 	//---------------------------------------------파일
 	// 게시글을 등록할때 게시글과 같이 파일을 등록하기 위한 메서드
 	int setFile(FileVo fv);

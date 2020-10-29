@@ -10,10 +10,11 @@
 
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!-- include summernote css/js -->
 <style>
 	#aa{
-		width : 90%;
+		width : 80%;
 		height : 80%;
 		float: left;
 		padding-left: 19%;
@@ -58,14 +59,13 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<%@ include file = "/layout/header.jsp" %>
-
-<div class="container-fluid">
-<div class="row">
-		<div class="col-sm-3col-md-2 sidebar">
-		<%@ include file = "/layout/left.jsp" %>
-		</div>
-</div>
+	<%@ include file = "/layout/header.jsp" %>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<%@ include file = "/layout/left.jsp" %>
+			</div>
+			
 				<div id="aa">
 			<form id="frm" class="form-horizontal" role="form"
 						action="${cp }BoardCreateChild" method="Post"
@@ -78,13 +78,13 @@ $(document).ready(function() {
 				<br>
 				<div class="form-group" id = "regBtn2">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button id="regBtn" type="button" class="btn btn-default">사용자 등록</button>
+						<button id="regBtn" type="button" class="btn btn-default">답글 등록</button>
 					</div>
 				</div>
 				
 			</form>
-				</div>
-			
+			</div>
 		</div>
+	</div>
 </body>
 </html>

@@ -216,6 +216,23 @@ public class BoardDao implements BoardDaoI {
 		sqlSession.close();
 		return result;
 	}
+
+	@Override
+	public int setBoardresult(BoardVo bv) {
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		int result =0;
+		try {
+			result = sqlSession.insert("board.setBoard", bv);
+		} catch (Exception e) {
+		}
+		if (result == 1) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+		sqlSession.close();
+		return result;
+	}
 }
 
 
