@@ -16,4 +16,9 @@
   
   </insert>
   
+  <update id="deleteReply" parameterType="int">
+  	update reply set reply_delete='Y'
+	where reply_seq = #{reply_seq}
+  </update>
+  
 </mapper>

@@ -1,4 +1,4 @@
-package kr.or.ddit.File;
+package kr.or.ddit.Files;
 
 import java.io.BufferedReader;
 

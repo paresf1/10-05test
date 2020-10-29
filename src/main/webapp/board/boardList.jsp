@@ -24,11 +24,21 @@ request.setAttribute("now", now);
 <%@ include file="/layout/commonLib.jsp"%>
 <script>
 	$(document).ready(function() {
+		
 		$("#memberList tr").on("click", function() {
 			// data-userid		
 			var board_seq = $(this).data("board_seq")
-			document.location = "/Board/BoardContent?board_seq=" + board_seq;
+			var board_delete =$(this).data("board_delete")
+			
+			if(board_delete=='N'){
+				document.location = "/Board/BoardContent?board_seq=" + board_seq;
+			}
+			else{
+
+			}
 		})
+
+		
 	})
 </script>
 <body>
@@ -58,10 +68,13 @@ request.setAttribute("now", now);
 
 								<tbody id="memberList">
 									<c:forEach items="${boardList }" var="list">
-										<tr data-board_seq="${list.board_seq }">
-											<%-- 							<input type="hidden" value = "${member.userid }"/> --%>
+										<tr data-board_seq="${list.board_seq }"
+											data-board_delete="${list.board_delete }"	>
 											<td>${list.board_seq }</td>
-											<td>${list.board_title }</td>
+											
+											<td><c:forEach var="i" begin="1" end = "${list.boardlevel }" >
+											&nbsp;&nbsp;
+											</c:forEach>  ${list.board_title }</td>
 											<td>${list.user_id }</td>
 											<td><fmt:formatDate value="${list.create_date }"
 													pattern="YYYY-MM-dd" /></td>
@@ -72,22 +85,43 @@ request.setAttribute("now", now);
 						</div>
 
 
-						<a href="${cp }BoardCreate?boardmenu_seq=${boardmenu_seq }" class="btn btn-default pull-right">사용자
+						<a href="${cp }BoardCreate?boardmenu_seq=${boardmenu_seq }" class="btn btn-default pull-right">게시글
 							등록</a>
 						<div class="text-center">
 							<ul class="pagination">
+							
+                        				 
+								<c:choose>
+									<c:when test="${page == 1}">
+										<li><a href="${pageContext.request.contextPath }/BoardList?page=${page}&boardmenu_seq=${boardmenu_seq }"  >이전</a></li>
+									</c:when>
+									<c:when test="${page != 1}">
+										<li><a href="${pageContext.request.contextPath }/BoardList?page=${page-1}&boardmenu_seq=${boardmenu_seq }"  >이전</a></li>
+									</c:when>
+								</c:choose>
+									
 								<c:forEach begin="1" end="${pages }" var="i">
 									<c:choose>
 										<c:when test="${i == page }">
 											<li class="active"><span>${i }</span></li>
 										</c:when>
 										<c:otherwise>
-											<!-- 							밑에 페이지 개수를 나타내는 li -->
-											<li><a
-												href="${pageContext.request.contextPath }/BoardList?page=${i}&boardmenu_seq=${boardmenu_seq }">${i }</a></li>
+											<li>
+												<a href="${pageContext.request.contextPath }/BoardList?page=${i}&boardmenu_seq=${boardmenu_seq }">${i }</a>
+											</li>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>
+									
+								<c:choose>
+									<c:when test="${page != pages}">
+										<li><a href="${pageContext.request.contextPath }/BoardList?page=${page+1}&boardmenu_seq=${boardmenu_seq }"  >다음</a></li>
+									</c:when>
+									<c:when test="${page == pages}">
+										<li><a href="${pageContext.request.contextPath }/BoardList?page=${page}&boardmenu_seq=${boardmenu_seq }"  >다음</a></li>
+									</c:when>
+								</c:choose>														
+									
 
 							</ul>
 						</div>

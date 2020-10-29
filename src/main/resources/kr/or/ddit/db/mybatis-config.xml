@@ -9,6 +9,7 @@
 		<typeAlias type="kr.or.ddit.model.BoardMenuVo" alias = "BoardMenuVo"/>
 		<typeAlias type="kr.or.ddit.model.BoardVo" alias = "BoardVo"/>
 		<typeAlias type="kr.or.ddit.model.ReplyVo" alias = "ReplyVo"/>
+		<typeAlias type="kr.or.ddit.model.FileVo" alias = "FileVo"/>
 	</typeAliases>
 
   <environments default="development">
@@ -28,6 +29,7 @@
     <mapper resource="kr/or/ddit/db/mapper/boardmenu.xml"/>
     <mapper resource="kr/or/ddit/db/mapper/board.xml"/>
     <mapper resource="kr/or/ddit/db/mapper/reply.xml"/>
+    <mapper resource="kr/or/ddit/db/mapper/file.xml"/>
   </mappers>
   
 </configuration>

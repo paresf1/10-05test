@@ -23,6 +23,11 @@ public class ReplyService implements ReplyServiceI{
 		return replydao.setReply(rv);
 	}
 
+	@Override
+	public int deleteReply(int reply_seq) {
+		return replydao.deleteReply(reply_seq);
+	}
+
 	
 	
 }

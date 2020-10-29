@@ -12,18 +12,18 @@
 		    (SELECT ROWNUM rn, A.*
 		     FROM
 		        (select	BOARDMENU_SEQ,
-      		 LEVEL BOARDLEVEL,
-     		 BOARD_SEQ,
-      		 BOARD_PARENT_SEQ,
-       	     CASE WHEN LEVEL = 1 THEN '' ELSE LPAD(' ㄴ', LEVEL*4, '!') END ||
-      		 CASE WHEN BOARD_DELETE = 'Y' THEN '**삭제된 글입니다.**'  ELSE BOARD_TITLE END BOARD_TITLE,
-    	     USER_ID,
-      		 BOARD_DELETE,
-     		 CREATE_DATE
-	FROM(select * from board where boardmenu_seq = #{boardmenu_seq})
-	START WITH  BOARD_PARENT_SEQ is null
-	CONNECT BY PRIOR BOARD_SEQ = BOARD_PARENT_SEQ 
-	ORDER SIBLINGS BY BOARD_SEQ) A )
+      		 	LEVEL BOARDLEVEL,
+     		 	BOARD_SEQ,
+      		 	BOARD_PARENT_SEQ,
+       	    	CASE WHEN LEVEL = 1 THEN ' ' ELSE LPAD(' ㄴ', LEVEL*4, ' ') END ||
+      		 	CASE WHEN BOARD_DELETE = 'Y' THEN '**삭제된 글입니다.**'  ELSE BOARD_TITLE END BOARD_TITLE,
+    	     	USER_ID,
+      		 	BOARD_DELETE,
+     		 	CREATE_DATE
+				FROM(select * from board where boardmenu_seq = #{boardmenu_seq})
+			START WITH  BOARD_PARENT_SEQ is null
+			CONNECT BY PRIOR BOARD_SEQ = BOARD_PARENT_SEQ 
+			ORDER SIBLINGS BY board_seq desc) A )
 	WHERE rn BETWEEN (#{page} - 1) * #{pageSize} + 1  AND #{page}  * #{pageSize}
 	
 	</select>
@@ -33,17 +33,35 @@
 		FROM board	where boardmenu_seq = #{boardmenu_seq}
   </select>
 
-  <insert id="setBoard" parameterType="BoardVo">
-  	insert into board(BOARD_TITLE, BOARD_CONTENT, BOARD_SEQ, BOARD_DELETE, CREATE_DATE, BOARDMENU_SEQ,  USER_ID)
-	values ( #{board_title}, #{board_content}, board_seq.nextval, 'N', sysdate, #{boardmenu_seq}, #{user_id})
-  	
-  </insert>
 
   <select id="getBoardContent" parameterType="int" resultType="BoardVo">
    select * 
    from board
    where board_seq = #{board_seq}
   </select>
+  
+  <insert id="setBoard" parameterType="BoardVo">
+  	insert into board(BOARD_TITLE, BOARD_CONTENT, BOARD_SEQ, BOARD_DELETE, CREATE_DATE, BOARDMENU_SEQ,  USER_ID)
+	values ( #{board_title}, #{board_content}, board_seq.nextval, 'N', sysdate, #{boardmenu_seq}, #{user_id})
+  	<selectKey resultType="int" keyProperty="board_seq">
+        SELECT board_seq.currval from dual
+    </selectKey> 
+  </insert>
 
+	<update id ="updateBoard" parameterType="BoardVo">
+		update board set BOARD_TITLE = #{board_title}, BOARD_CONTENT = #{board_content} where BOARD_SEQ = #{board_seq}
+	</update>
+	
+	<update id = "deleteBoard" parameterType="int">
+		update board set BOARD_DELETE = 'Y'
+		where BOARD_SEQ = #{board_seq}
+	</update>
+	
+	<insert id="setBoardChild" parameterType="BoardVo">
+		insert into board (BOARD_TITLE, BOARD_SEQ, BOARD_DELETE, CREATE_DATE, BOARDMENU_SEQ, BOARD_PARENT_SEQ, USER_ID, BOARD_CONTENT)
+		values(#{board_title},board_seq.nextval, 'N', sysdate, #{boardmenu_seq}, #{board_parent_seq}, #{user_id}, #{board_content})
+	</insert>
+	
+	
 </mapper>
 

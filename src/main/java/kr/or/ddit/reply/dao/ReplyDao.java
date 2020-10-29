@@ -38,4 +38,24 @@ public class ReplyDao implements ReplyDaoI{
 		return result;
 	}
 
+	@Override
+	public int deleteReply(int reply_seq) {
+		SqlSession sqlSession = MybatisUtil.getSqlSession();
+		int result = 0; 
+		
+		try {
+			result = sqlSession.update("reply.deleteReply",reply_seq);
+		} catch (Exception e) {
+			//
+		}
+		if (result == 1) {
+			sqlSession.commit();
+		} else {
+			sqlSession.rollback();
+		}
+
+		sqlSession.close();
+		return result;
+	}
+
 }

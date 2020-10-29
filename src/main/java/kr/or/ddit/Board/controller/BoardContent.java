@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.or.ddit.Board.Service.BoardService;
 import kr.or.ddit.Board.Service.BoardServiceI;
 import kr.or.ddit.model.BoardVo;
+import kr.or.ddit.model.FileVo;
 import kr.or.ddit.model.ReplyVo;
 import kr.or.ddit.reply.service.ReplyService;
 import kr.or.ddit.reply.service.ReplyServiceI;
@@ -36,11 +37,14 @@ public class BoardContent extends HttpServlet {
 		int board_seq = Integer.parseInt(request.getParameter("board_seq"));
 		BoardVo boardContent = boardService.getBoardContent(board_seq);
 		List<ReplyVo> replyList = replyService.getReply(board_seq);
+		List<FileVo> fileList = boardService.getFileList(board_seq);
 		
+		request.setAttribute("fileList", fileList);	
 		request.setAttribute("replyList", replyList);
 		request.setAttribute("boardContent", boardContent);
 		
 		request.getRequestDispatcher("board/boardContent.jsp").forward(request, response);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

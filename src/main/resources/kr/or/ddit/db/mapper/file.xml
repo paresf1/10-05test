@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+	<insert id="setFile">
+		INSERT INTO FILES (FILE_NAME, FILE_REALNAME, FILE_SEQ, FILE_DELETE, BOARD_SEQ)
+		VALUES(#{file_name}, #{file_realname}, file_seq.nextval, 'N', #{board_seq})
+	</insert>
+	
+	<select id="getFileList" resultType="FileVO" parameterType="int">
+	select * from files
+	where board_seq = #{board_seq}
+	</select>
+	
+	<select id="getFile" resultType="FileVO" parameterType="int">
+	select * from files
+	where file_seq = #{file_seq}
+	</select>
+	
+	<delete id="deleteFile" parameterType="int">
+	delete from files
+	where file_seq = #{file_seq}
+	</delete>
+</mapper>

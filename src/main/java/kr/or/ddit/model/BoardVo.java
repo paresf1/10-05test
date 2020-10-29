@@ -14,7 +14,28 @@ public class BoardVo {
 	private String user_id           ;
 	private int page ;
 	private int pageSize ;
+	private int boardlevel;
+	private int prePage;
+	private int endPage;
 	
+	public int getPrePage() {
+		return prePage;
+	}
+	public void setPrePage(int prePage) {
+		this.prePage = prePage;
+	}
+	public int getEndPage() {
+		return endPage;
+	}
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+	public int getBoardlevel() {
+		return boardlevel;
+	}
+	public void setBoardlevel(int boardlevel) {
+		this.boardlevel = boardlevel;
+	}
 	public String getBoard_title() {
 		return board_title;
 	}
@@ -75,6 +96,8 @@ public class BoardVo {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,6 +107,7 @@ public class BoardVo {
 		result = prime * result + board_parent_seq;
 		result = prime * result + board_seq;
 		result = prime * result + ((board_title == null) ? 0 : board_title.hashCode());
+		result = prime * result + boardlevel;
 		result = prime * result + boardmenu_seq;
 		result = prime * result + ((create_date == null) ? 0 : create_date.hashCode());
 		result = prime * result + page;
@@ -119,6 +143,8 @@ public class BoardVo {
 				return false;
 		} else if (!board_title.equals(other.board_title))
 			return false;
+		if (boardlevel != other.boardlevel)
+			return false;
 		if (boardmenu_seq != other.boardmenu_seq)
 			return false;
 		if (create_date == null) {
@@ -137,7 +163,6 @@ public class BoardVo {
 			return false;
 		return true;
 	}
-	
 	@Override
 	public String toString() {
 		return "BoardVo [board_title=" + board_title + ", board_content=" + board_content + ", board_seq=" + board_seq

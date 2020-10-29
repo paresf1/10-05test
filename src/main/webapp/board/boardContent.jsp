@@ -2,11 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<%
-	Date now = new Date();
-request.setAttribute("now", now);
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +20,33 @@ request.setAttribute("now", now);
 <%@ include file="/layout/commonLib.jsp"%>
 <script>
 	$(document).ready(function() {
-		$("#memberList tr").on("click", function() {
+		
+		$("#delete").on("click", function() {
 			// data-userid		
-			var board_seq = $(this).data("board_seq")
-			document.location = "/BoardContent?board_seq=" + board_seq;
+			var board_seq = "${boardContent.board_seq }"
+			document.location = "/Board/BoardDelete?board_seq=" + board_seq+"&boardmenu_seq=${boardContent.boardmenu_seq }" ;
+		})
+		
+		$("#update").on("click", function() {
+			// data-userid		
+			var board_seq = "${boardContent.board_seq }"
+			document.location = "/Board/BoardUpdate?board_seq=" + board_seq;
+		})
+		
+		$(".fileDown").on("click", function(){
+			var seq = $(this).val()
+			document.location = "/Board/FileDownload?file_seq=" + seq;
+		})
+
+		$(".replydelete").on("click", function(){
+			var replyseq = $(this).val()
+			var boardseq = "${boardContent.board_seq }"
+			document.location = "/Board/ReplyDelete?reply_seq="+ replyseq +"&board_seq=" + boardseq;
+			$(this).parent().remove();
+		})
+		$("#childContent").on("click", function(){
+			var board_seq = "${boardContent.board_seq }"
+			document.location = "/Board/BoardCreateChild?board_seq="+board_seq+"&boardmenu_seq=${boardContent.boardmenu_seq }" ; 
 		})
 	})
 	
@@ -47,7 +67,6 @@ function fnChkByte(obj, maxByte){
         if(rbyte <= maxByte)
             rlen = i+1;                                          //return할 문자열 갯수
      if(rbyte > maxByte){
-  		// alert("한글 "+(maxByte/2)+"자 / 영문 "+maxByte+"자를 초과 입력할 수 없습니다.");
   		alert("메세지는 최대 " + maxByte + "byte를 초과할 수 없습니다.")
   		str2 = str.substr(0,rlen);                                  //문자열 자르기
   		obj.value = str2;
@@ -72,15 +91,23 @@ function fnChkByte(obj, maxByte){
 		height : 80%;
 	}
 	#writediv{
-		padding-left: 4%;
+		padding-left: 21%;
 	}
 	#submit{
 		width : auto;
 		
 	}
-	#submitright{
+	.submitright{
 		padding-left: 53%;
 	}
+	#update{
+		margin-left: 25%;
+	}
+	#childContent{
+		margin-left: 40%;
+	}
+	
+	
 </style>
 <body>
 	<%@ include file="/layout/header.jsp"%>
@@ -115,32 +142,62 @@ function fnChkByte(obj, maxByte){
 				<div class="form-group">
 						<label for="userNm" class="col-sm-2 control-label">첨부파일</label>
 						<div class="col-sm-10">
-<%-- 							<label class="control-label" >${boardContent.board_content }</label> --%>
+						
+						<c:forEach items="${fileList }" var ="fileList">
+						<button class="fileDown" type="button" class="btn btn-default" value="${fileList.file_seq }">${fileList.file_realname } </button>
+						</c:forEach>
+						
 						</div>
 				</div>
-					<br>
+
+				<br>
 					<br>
 					<br>
 				</div>
-				
-				
+				<div class="form-group" class ="update">
+					<div class="col-sm-offset-2 col-sm-10">
+					
+						<c:choose>
+							<c:when test="${boardContent.user_id == memberVo.user_id }">
+								<button id="update" type="button" class="btn btn-default">게시글수정</button>
+								<button id="delete" type="button" class="btn btn-default">게시글삭제</button>
+								<style>	#childContent{margin-left: 0px}</style>
+							</c:when>
+							<c:otherwise></c:otherwise>
+						</c:choose>
+						<button id="childContent" type="button" class="btn btn-default">답글작성</button>
+						<br>
+					</div>
+				</div>
+				<br>
+				<br>
 				<div class="form-group" id = "reply">
 						<label for="userNm" class="col-sm-2 control-label">댓글</label>
+						
 						<c:forEach items = "${replyList }" var = "reply">
 						<label for="userNm" class="col-sm-2 control-label"></label>
 						<div class="col-sm-10">
-							<label class="control-label" >${reply.reply_content }&nbsp;&nbsp; /&nbsp;&nbsp;</label>
-							<label class="control-label" >${reply.user_id }&nbsp;&nbsp; /&nbsp;&nbsp;</label>
-							<label class="control-label" >${reply.create_date } &nbsp;&nbsp;</label>
+							<c:choose>
+								<c:when test="${reply.reply_delete == 'N' }">
+								<label class="control-label" >${reply.reply_content }&nbsp;&nbsp; /&nbsp;&nbsp;</label>
+								<label class="control-label" >${reply.user_id }&nbsp;&nbsp; /&nbsp;&nbsp;</label>
+								<label class="control-label" ><fmt:formatDate value="${reply.create_date }" pattern="YYYY-MM-dd" />  &nbsp;&nbsp;</label>
+								<button type="button" class = "replydelete" value ="${reply.reply_seq }">삭제</button>
+								</c:when>
+								<c:otherwise><label class="control-label" >삭제된 댓글입니다.</label></c:otherwise>
+							</c:choose>
+							
+							<div id="${reply.reply_seq }">
+							</div>
+							
 						</div>
 						</c:forEach>
-			</div>
+				</div>
 			
 			
 			<form class="form-horizontal" role="form"
 						action="${cp }ReplyCreate" method="Post">
 			<div class="form-group">
-				<label for="reply"  class="col-sm-2 control-label">댓글</label>
 				<div class="col-sm-10" id = "writediv">
 					<input type= "hidden" name = "board_seq" value = "${boardContent.board_seq }">
 					<textarea id="write" class="form-control"  
@@ -148,7 +205,7 @@ function fnChkByte(obj, maxByte){
 					name="reply_content" rows="10" cols="20" 
 					placeholder="댓글을 입력해주세요"></textarea>
 					<span id="byteInfo">0</span> 500bytes
-					<div id = "submitright">
+					<div class = "submitright">
 					<input id="submit" class="form-control" type="submit" value = "댓글 등록">
 					</div>
 				</div>

@@ -68,7 +68,7 @@ $(document).ready(function() {
 </div>
 				<div id="aa">
 			<form id="frm" class="form-horizontal" role="form"
-						action="${cp }BoardCreate" method="Post"
+						action="${cp }BoardCreateChild" method="Post"
 						enctype=  "multipart/form-data">
 				<input id="title" name="board_title" placeholder="제목을 입력해주세요">
 				

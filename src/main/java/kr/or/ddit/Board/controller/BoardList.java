@@ -44,6 +44,9 @@ public class BoardList extends HttpServlet {
 		int pageSize = pageSize_str ==null ? 7: Integer.parseInt(pageSize_str);
 		request.setAttribute("pageSize", pageSize);
 		
+//		String prePage = request.getParameter("prePage");
+//		String endPage = request.getParameter("endPage");
+		
 		BoardVo bv = new BoardVo();
 		bv.setPage(page);
 		bv.setPageSize(pageSize);
@@ -52,10 +55,10 @@ public class BoardList extends HttpServlet {
 		Map<String, Object> map = boardService.getAllBoardList(bv);
 		request.setAttribute("boardList", map.get("boardList"));
 		request.setAttribute("pages", map.get("pages"));
-		
+//		request.setAttribute("prePage", map.get("prePage"));
+//		request.setAttribute("endPage", map.get("endPage"));
 		
 		request.getRequestDispatcher("board/boardList.jsp").forward(request, response);
-		
 	}
 
 	/**

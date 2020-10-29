@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import kr.or.ddit.Board.Service.BoardService;
 import kr.or.ddit.Board.Service.BoardServiceI;
 import kr.or.ddit.Files.FileUploadUtil;
@@ -22,25 +19,26 @@ import kr.or.ddit.model.FileVo;
 import kr.or.ddit.model.MemberVo;
 
 /**
- * Servlet implementation class BoardCreate
+ * Servlet implementation class BoardContentChild
  */
-@WebServlet("/BoardCreate")
+@WebServlet("/BoardCreateChild")
 @MultipartConfig
-public class BoardCreate extends HttpServlet {
+public class BoardCreateChild extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static final Logger logger = LoggerFactory.getLogger(BoardCreate.class);
-	String boardmenu_seq;
-	
-	private BoardServiceI boardService;
+       
+	int board_seq;
+	int boardmenu_seq;
+	BoardServiceI boardService;
 	@Override
 	public void init() throws ServletException {
 		boardService = new BoardService();
 	}
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		boardmenu_seq =  request.getParameter("boardmenu_seq");
+		board_seq = Integer.parseInt(request.getParameter("board_seq"));
+		boardmenu_seq = Integer.parseInt(request.getParameter("boardmenu_seq"));
 		
-		request.getRequestDispatcher("board/boardCreate.jsp").forward(request, response);
+		request.getRequestDispatcher("board/BoardCreateChild.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,19 +50,18 @@ public class BoardCreate extends HttpServlet {
 		
 		MemberVo mv = (MemberVo)request.getSession().getAttribute("memberVo");
 		
-		int boardmenu_seq_int = Integer.parseInt(boardmenu_seq);
 		BoardVo bv = new BoardVo();
 		bv.setBoard_title(board_title);
 		bv.setUser_id(mv.getUser_id());
 		bv.setBoard_content(board_content);
-		bv.setBoardmenu_seq(boardmenu_seq_int);
+		bv.setBoardmenu_seq(boardmenu_seq);
+		bv.setBoard_parent_seq(board_seq);
 		
-		int board_seq = boardService.setBoard(bv);
+		int board_seq = boardService.setBoardChild(bv);
 		
 		FileVo fv = new FileVo();
 		for (int i = 1; i <=count ; i++) {
 			Part profile = request.getPart("FILE_NAME"+i);
-			logger.debug("file : {}", profile.getHeader("Content-Disposition"));
 			String realfileName = FileUploadUtil.getFilename(profile.getHeader("content-Disposition"));
 			String fileExtension = FileUploadUtil.getExtension(realfileName);
 			String file_name = "D:\\profile\\"+UUID.randomUUID().toString() + "."+fileExtension;
@@ -86,13 +83,4 @@ public class BoardCreate extends HttpServlet {
 		
 	}	
 }
-
-
-
-
-
-
-
-
-
 
